@@ -3,10 +3,12 @@ package alapmuvgyak;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Muveletek extends javax.swing.JFrame {
@@ -14,6 +16,11 @@ public class Muveletek extends javax.swing.JFrame {
     /**
      * Creates new form Muveletek
      */
+
+    int szam1;
+    int szam2;
+    int eredmeny;
+    
     public Muveletek() {
         initComponents();
     }
@@ -228,6 +235,11 @@ public class Muveletek extends javax.swing.JFrame {
 
         buttonGroup1.add(mnuOsszead);
         mnuOsszead.setText("Összeadás");
+        mnuOsszead.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuOsszeadActionPerformed(evt);
+            }
+        });
         mnuMuvelet.add(mnuOsszead);
 
         buttonGroup1.add(mnuKivon);
@@ -317,17 +329,42 @@ public class Muveletek extends javax.swing.JFrame {
         if (valasztottGomb == JFileChooser.APPROVE_OPTION) {
             File f = fc.getSelectedFile();
             String[] kit = ((FileNameExtensionFilter)fc.getFileFilter()).getExtensions();
-            String fn = f.getName() + "." + kit[0];
+            String fn = f.getPath();// + "." + kit[0];
+            
+            
+            if(fn.endsWith("." + kit[0])){
+                fn += "." + kit[0];
+            }
+            
+            Path path = Paths.get(fn);
+            boolean mentes = true;
+            if(Files.exists(path)){
+                valasztottGomb = JOptionPane.showConfirmDialog(this, "Felülirja?", "A fájl létezik", JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+                if (valasztottGomb == JOptionPane.YES_OPTION) {
+                    mentes = false;
+                }
+            }
+            
+            
             lblEredmeny.setText("<html>Elérés: " + f.getPath() + "<br>Fájl neve: " + fn + "</html>");
             try {
-                Files.write(Paths.get(f.getPath() + "." + kit[0]), "Statisztika: ".getBytes());
+                
+                if (mentes) {
+                    Files.write(Paths.get(fn), "Statisztika: ".getBytes());
+                }
             } catch (IOException ex) {
                 Logger.getLogger(Muveletek.class.getName()).log(Level.SEVERE, null, ex);
             }
 
+        }else{
+            JOptionPane.showMessageDialog(this, "Mentés megszakítva!", "Nincs mentés", JOptionPane.INFORMATION_MESSAGE);
         }
 
     }//GEN-LAST:event_mnuFajlMentesMaskentActionPerformed
+
+    private void mnuOsszeadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOsszeadActionPerformed
+        
+    }//GEN-LAST:event_mnuOsszeadActionPerformed
 
     /**
      * @param args the command line arguments
