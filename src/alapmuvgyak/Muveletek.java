@@ -312,6 +312,7 @@ public class Muveletek extends javax.swing.JFrame {
 //        }
         if (mentettFajl == null) {
             mnuFajlMentesMaskentActionPerformed(evt);
+            
         } else {
             try {
                 
