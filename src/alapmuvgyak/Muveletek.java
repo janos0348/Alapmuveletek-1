@@ -16,7 +16,7 @@ public class Muveletek extends javax.swing.JFrame {
     /**
      * Creates new form Muveletek
      */
-
+    String mentettFajl;
     int szam1;
     int szam2;
     int eredmeny;
@@ -294,20 +294,31 @@ public class Muveletek extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void mnuFajlMentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuFajlMentActionPerformed
-        JFileChooser fc = new JFileChooser();
-        fc.setDialogTitle("Fájl mentése");
-        fc.setCurrentDirectory(new File("."));
-        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int valasztottGomb = fc.showSaveDialog(this);
-        if (valasztottGomb == JFileChooser.APPROVE_OPTION) {
-            File f = fc.getSelectedFile();
-            if (f.isDirectory()) {
-                lblEredmeny.setText("<html>Elérés: " + f.getPath() + "<br>Könyvtár: " + f.getName() + "</html>");
-                try {
-                    Files.write(Paths.get(f.getPath(), "/stat.txt"), "Statisztika: ".getBytes());
-                } catch (IOException ex) {
-                    Logger.getLogger(Muveletek.class.getName()).log(Level.SEVERE, null, ex);
-                }
+//        JFileChooser fc = new JFileChooser();
+//        fc.setDialogTitle("Fájl mentése");
+//        fc.setCurrentDirectory(new File("."));
+//        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//        int valasztottGomb = fc.showSaveDialog(this);
+//        if (valasztottGomb == JFileChooser.APPROVE_OPTION) {
+//            File f = fc.getSelectedFile();
+//            if (f.isDirectory()) {
+//                lblEredmeny.setText("<html>Elérés: " + f.getPath() + "<br>Könyvtár: " + f.getName() + "</html>");
+//                try {
+//                    Files.write(Paths.get(f.getPath(), "/stat.txt"), "Statisztika: ".getBytes());
+//                } catch (IOException ex) {
+//                    Logger.getLogger(Muveletek.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        }
+        if (mentettFajl == null) {
+            mnuFajlMentesMaskentActionPerformed(evt);
+        } else {
+            try {
+                
+                Files.write(Paths.get(mentettFajl), "Statisztika: ".getBytes());
+                
+            } catch (IOException ex) {
+                Logger.getLogger(Muveletek.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_mnuFajlMentActionPerformed
@@ -328,23 +339,21 @@ public class Muveletek extends javax.swing.JFrame {
         int valasztottGomb = fc.showSaveDialog(this);
         if (valasztottGomb == JFileChooser.APPROVE_OPTION) {
             File f = fc.getSelectedFile();
-            String[] kit = ((FileNameExtensionFilter)fc.getFileFilter()).getExtensions();
+            String[] kit = ((FileNameExtensionFilter) fc.getFileFilter()).getExtensions();
             String fn = f.getPath();// + "." + kit[0];
-            
-            
-            if(fn.endsWith("." + kit[0])){
+
+            if (fn.endsWith("." + kit[0])) {
                 fn += "." + kit[0];
             }
-            
+            mentettFajl = fn;
             Path path = Paths.get(fn);
             boolean mentes = true;
-            if(Files.exists(path)){
-                valasztottGomb = JOptionPane.showConfirmDialog(this, "Felülirja?", "A fájl létezik", JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+            if (Files.exists(path)) {
+                valasztottGomb = JOptionPane.showConfirmDialog(this, "Felülirja?", "A fájl létezik", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                 if (valasztottGomb == JOptionPane.YES_OPTION) {
                     mentes = false;
                 }
             }
-            
             
             lblEredmeny.setText("<html>Elérés: " + f.getPath() + "<br>Fájl neve: " + fn + "</html>");
             try {
@@ -355,15 +364,15 @@ public class Muveletek extends javax.swing.JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(Muveletek.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-        }else{
+            
+        } else {
             JOptionPane.showMessageDialog(this, "Mentés megszakítva!", "Nincs mentés", JOptionPane.INFORMATION_MESSAGE);
         }
 
     }//GEN-LAST:event_mnuFajlMentesMaskentActionPerformed
 
     private void mnuOsszeadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOsszeadActionPerformed
-        
+
     }//GEN-LAST:event_mnuOsszeadActionPerformed
 
     /**
@@ -373,7 +382,7 @@ public class Muveletek extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
