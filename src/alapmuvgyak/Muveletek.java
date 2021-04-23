@@ -23,8 +23,11 @@ public class Muveletek extends javax.swing.JFrame {
     int szam1;
     int szam2;
     int eredmeny;
+    int osszKerdes = 0;
+    int osszProba = 0;
     int osztasKerdes = 0;
     int osztasProba = 0;
+    int szorzasProba = 0;
     Random rnd = new Random();
     public Muveletek() {
         initComponents();
@@ -282,6 +285,11 @@ public class Muveletek extends javax.swing.JFrame {
 
         buttonGroup1.add(mnuSzorzas);
         mnuSzorzas.setText("Szorzás");
+        mnuSzorzas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuSzorzasActionPerformed(evt);
+            }
+        });
         mnuMuvelet.add(mnuSzorzas);
 
         jMenuBar1.add(mnuMuvelet);
@@ -449,6 +457,7 @@ public class Muveletek extends javax.swing.JFrame {
     private void mnuOsztActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOsztActionPerformed
         btnEllenorzes.setEnabled(true);
         osztasKerdes++;
+        osszKerdes++;
         do {
             szam1 = rnd.nextInt(101);
             szam2 = rnd.nextInt(101);
@@ -458,7 +467,15 @@ public class Muveletek extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuOsztActionPerformed
 
     private void btnEllenorzesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEllenorzesActionPerformed
-        osztasProba++;   
+        osszProba++;
+        if (mnuOszt.isSelected()){
+        osztasKerdes++;
+        lblOsztasProba.setText("Osztás: " + osztasProba);
+        }else if(mnuSzorzas.isSelected()){
+            szorzasProba++;
+        lblOsztasProba.setText("Szorzás: " + szorzasProba);
+        }
+        osszProba=osztasProba+szorzasProba;
         eredmeny = szam1 / szam2;
         if(txtEredmeny.getText().equals(eredmeny)){
             lblValasz.setText(eredmeny + "jó!");
@@ -467,11 +484,13 @@ public class Muveletek extends javax.swing.JFrame {
             lblValasz.setText("Rossz Válasz");
         }
         btnEllenorzes.setEnabled(false);
-        lblOsztasProba.setText("Osztás: " + osztasProba);
+        
+        lblOsszeadProba.setText("Össz Próbálkozások száma: " + osszProba);
     }//GEN-LAST:event_btnEllenorzesActionPerformed
 
     private void btnUjActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUjActionPerformed
-        osztasKerdes++;
+        
+        
         btnEllenorzes.setEnabled(true);
         do {
             szam1 = rnd.nextInt(101);
@@ -479,6 +498,7 @@ public class Muveletek extends javax.swing.JFrame {
         } while (szam2 == 0 && szam1%szam2==0);
         lblFeladat.setText("Osztás: " + szam1 + " / " + szam2);
         lblOsztasKerdes.setText("Osztás: " + osztasKerdes);
+        
     }//GEN-LAST:event_btnUjActionPerformed
 
     private void btnMegoldasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMegoldasActionPerformed
@@ -486,6 +506,14 @@ public class Muveletek extends javax.swing.JFrame {
         lblEredmeny.setText(String.valueOf(eredmeny));
     }//GEN-LAST:event_btnMegoldasActionPerformed
 
+    private void mnuSzorzasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSzorzasActionPerformed
+                btnEllenorzes.setEnabled(true);
+        szorzasProba++;
+        osszKerdes++;
+        lblFeladat.setText("Szorzás: " + szam1 + " / " + szam2);
+        lblSzorzasKerdes.setText("Szorzás: " + osztasKerdes);
+    }//GEN-LAST:event_mnuSzorzasActionPerformed
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
