@@ -447,8 +447,16 @@ public class Muveletek extends javax.swing.JFrame {
         if (valasztottGomb == JFileChooser.APPROVE_OPTION) {
             File f = fc.getSelectedFile();
             String fn = f.getPath();
-            Path path = Paths.get(fn);
             lblEredmeny.setText("<html>Elérés: " + f.getPath() + "<br>Fájl neve: " + fn + "</html>");
+            Path path = Paths.get(fn);
+            try {
+                byte[] bajtTomb = Files.readAllBytes(path);
+                byte egyBajt = bajtTomb[0];
+                int temp = 7;
+            } catch (IOException ex) {
+                Logger.getLogger(Muveletek.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         } else {
             JOptionPane.showMessageDialog(this, "Megnyitás megszakítva!", "Nem lesz megnyitva semmi", JOptionPane.INFORMATION_MESSAGE);
         }
